@@ -299,6 +299,29 @@ def armar_email_html(nuevos: list[Empleo]) -> str:
             </div>"""
         return html
 
+    # Bloque sin novedades
+    if not nuevos:
+        return f"""
+    <html><body style="font-family:Arial,sans-serif;max-width:620px;margin:auto;background:#f5f5f5;padding:20px">
+    <div style="background:#1F4E78;color:#fff;padding:20px;border-radius:8px 8px 0 0">
+        <h2 style="margin:0">🐍 Empleos Python Junior</h2>
+        <p style="margin:4px 0;opacity:.8">Resumen del {fecha}</p>
+    </div>
+    <div style="background:#fff;padding:20px;border-radius:0 0 8px 8px;text-align:center">
+        <div style="font-size:48px;margin:20px 0">🔍</div>
+        <h3 style="color:#555;font-weight:400">Sin novedades hoy</h3>
+        <p style="color:#888;font-size:14px;max-width:380px;margin:0 auto">
+            No aparecieron empleos nuevos en PyAr, Computrabajo, BairesDev ni Wellfound.<br>
+            Mañana se vuelve a rastrear automáticamente.
+        </p>
+        <hr style="border:none;border-top:1px solid #eee;margin:24px 0">
+        <p style="font-size:12px;color:#aaa">
+            Job Tracker · Python · Rodrigo Romero · {fecha}
+        </p>
+    </div>
+    </body></html>
+    """
+
     return f"""
     <html><body style="font-family:Arial,sans-serif;max-width:620px;margin:auto;background:#f5f5f5;padding:20px">
     <div style="background:#1F4E78;color:#fff;padding:20px;border-radius:8px 8px 0 0">
@@ -324,13 +347,17 @@ def armar_email_html(nuevos: list[Empleo]) -> str:
 
 
 def enviar_email(nuevos: list[Empleo]):
-    if not nuevos:
-        print("  Sin nuevos empleos, no se envía email.")
-        return
+    fecha = datetime.now().strftime("%d/%m/%Y")
 
-    print(f"  Enviando email con {len(nuevos)} empleos nuevos...")
+    if nuevos:
+        asunto = f"🐍 {len(nuevos)} empleos nuevos Python Junior — {fecha}"
+        print(f"  Enviando email con {len(nuevos)} empleos nuevos...")
+    else:
+        asunto = f"🐍 Sin novedades hoy — {fecha}"
+        print("  Sin nuevos empleos. Enviando email de aviso...")
+
     msg = MIMEMultipart("alternative")
-    msg["Subject"] = f"🐍 {len(nuevos)} empleos Python Junior — {datetime.now().strftime('%d/%m/%Y')}"
+    msg["Subject"] = asunto
     msg["From"]    = EMAIL_FROM
     msg["To"]      = EMAIL_TO
 
