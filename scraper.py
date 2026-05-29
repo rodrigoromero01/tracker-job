@@ -33,7 +33,7 @@ EXCLUDE_KEYWORDS = ["senior", "sr.", "ssr", "semi senior", "lead", "architect"]
 
 EMAIL_FROM = os.getenv("EMAIL_FROM", "rodrigoromero01@gmail.com")
 EMAIL_TO   = os.getenv("EMAIL_TO",   "rodrigoromero01@gmail.com")
-EMAIL_PASS = os.getenv("EMAIL_PASS", "pjuj djjm otss kxhp")
+EMAIL_PASS = os.getenv("EMAIL_PASS", "")
 DB_PATH    = os.getenv("DB_PATH", "empleos.db")
 
 
