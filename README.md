@@ -35,8 +35,8 @@ git push -u origin main
 En tu proyecto → pestaña Variables → agregar:
 
 ```
-EMAIL_FROM   → rodrigoromero01@gmail.com
-EMAIL_TO     → rodrigoromero01@gmail.com
+EMAIL_FROM   → tu@gmail.com
+EMAIL_TO     → tu@gmail.com
 EMAIL_PASS   → xxxx xxxx xxxx xxxx
 RUN_HOUR     → 8
 RUN_MINUTE   → 0
