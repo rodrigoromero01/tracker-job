@@ -1,0 +1,24 @@
+# scraper.patterns — patrones PROHIBIDOS que bloquean la escritura (check_patterns.sh).
+#
+# Formato:  <regex ERE (grep -E)> ::: <explicacion para corregir>
+#   - Lineas que empiezan con # o vacias se ignoran.
+#   - El separador es exactamente ' ::: ' (espacio, tres dos-puntos, espacio).
+#   - Solo se evaluan archivos .py DEL PROYECTO (no los del enjambre .claude/).
+#
+# Filosofia: aca van SOLO cosas que deben corregirse SI O SI (seguridad, fuga de
+# secretos). Los avisos de robustez (timeout, except pelado) son NO bloqueantes y
+# viven en validate_py.sh. Agregar una regla = agregar una linea; no se toca el script.
+#
+# --- Secretos hardcodeados -----------------------------------------------------
+
+(EMAIL_PASS|EMAIL_PASSWORD|PASSWORD|PASSWD|SMTP_PASS|API_KEY|APIKEY|TOKEN|SECRET|ACCESS_KEY)[[:space:]]*=[[:space:]]*['"][^'"]{6,}['"] ::: Secreto hardcodeado como string literal. Los secretos van SIEMPRE por variable de entorno: os.getenv("EMAIL_PASS", ""). Nunca literales en el codigo (quedan en el historial de git). Ver skill secrets-hygiene.
+
+\.login\([^,)]+,[[:space:]]*['"][^'"]+['"][[:space:]]*\) ::: Credencial literal en .login(usuario, "password"). Pasa el password desde os.getenv, no como string en el codigo. Ver skill secrets-hygiene.
+
+# --- Fuga de secretos por logs -------------------------------------------------
+
+print\([^)]*(PASS|PASSWORD|TOKEN|SECRET|API_KEY)[^)]*\) ::: No imprimas secretos por stdout: quedan en los logs de Railway y de tu terminal. Logueá que el envio fallo, no la credencial. Ver skill secrets-hygiene.
+
+# --- gitignore roto ------------------------------------------------------------
+
+load_dotenv\([^)]*\.env\.example ::: Estas cargando .env.example (el template) como si fuera el archivo real de secretos. load_dotenv() sin argumentos ya toma .env; .env.example es solo la plantilla versionada.

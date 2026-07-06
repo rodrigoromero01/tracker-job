@@ -1,0 +1,58 @@
+<!--
+  ============================================================================
+  REFERENCIA DE DISEÑO — email de resumen de empleos (tracker-job)
+  ============================================================================
+  Esto es una MAQUETA de referencia, NO el generador. El HTML real lo arma
+  `armar_email_html(nuevos)` en scraper.py; si cambiás el diseño, cambialo allá
+  (el @notifier) y reflejá el ajuste acá.
+
+  El CSS va 100% INLINE a propósito: los clientes de correo (Gmail, Outlook)
+  eliminan <style> y <head> y no soportan CSS moderno (flexbox, grid, variables).
+  Solo respetan style="" inline. Para layouts complejos, usar tablas — no divs
+  con flex. Ver skill `email-html` y `references/gotchas.md`.
+
+  Placeholders (los reemplaza el generador):
+    {{FECHA}}                 → fecha del resumen, dd/mm/aaaa
+    {{TOTAL}}                 → cantidad total de empleos nuevos
+    {{REMOTOS_COUNT}}         → cantidad de remotos
+    {{PRESENCIALES_COUNT}}    → cantidad de presenciales / híbridos
+    {{TARJETAS_REMOTOS}}      → HTML de las tarjetas remotas (o aviso si no hay)
+    {{TARJETAS_PRESENCIALES}} → HTML de las tarjetas presenciales (o aviso)
+  Cada tarjeta se genera con el bloque marcado "TARJETA DE EJEMPLO" más abajo.
+  El caso "sin novedades" (nuevos == 0) es una variante aparte en el generador.
+  ============================================================================
+-->
+<html>
+<body style="font-family:Arial,sans-serif;max-width:620px;margin:auto;background:#f5f5f5;padding:20px">
+  <div style="background:#1F4E78;color:#fff;padding:20px;border-radius:8px 8px 0 0">
+    <h2 style="margin:0">🐍 Empleos Python Junior</h2>
+    <p style="margin:4px 0;opacity:.8">Resumen del {{FECHA}} · {{TOTAL}} nuevos encontrados</p>
+  </div>
+  <div style="background:#fff;padding:20px;border-radius:0 0 8px 8px">
+
+    <h3 style="color:#2E75B6;border-bottom:1px solid #eee;padding-bottom:8px">
+      🌐 Remotos ({{REMOTOS_COUNT}})
+    </h3>
+    {{TARJETAS_REMOTOS}}
+
+    <!-- ─── TARJETA DE EJEMPLO (así se ve cada empleo dentro de {{TARJETAS_*}}) ─── -->
+    <div style="border:1px solid #e0e0e0;border-radius:8px;padding:14px;margin-bottom:12px;background:#fff;">
+      <div style="font-weight:600;font-size:15px;color:#1a1a1a">Desarrollador Python Junior</div>
+      <div style="color:#555;font-size:13px;margin:4px 0">Acme SA · Remoto</div>
+      <div style="font-size:12px;color:#888;margin-bottom:8px">Fuente: PyAr · 06/07/2026</div>
+      <a href="https://ejemplo.com/oferta" style="background:#2E75B6;color:#fff;padding:6px 14px;border-radius:5px;text-decoration:none;font-size:13px">Ver oferta →</a>
+    </div>
+    <!-- ─── FIN TARJETA DE EJEMPLO ─── -->
+
+    <h3 style="color:#2E75B6;border-bottom:1px solid #eee;padding-bottom:8px;margin-top:24px">
+      📍 Presenciales / Híbridos ({{PRESENCIALES_COUNT}})
+    </h3>
+    {{TARJETAS_PRESENCIALES}}
+
+    <hr style="border:none;border-top:1px solid #eee;margin:20px 0">
+    <p style="font-size:12px;color:#aaa;text-align:center">
+      Job Tracker · Python · Rodrigo Romero · {{FECHA}}
+    </p>
+  </div>
+</body>
+</html>

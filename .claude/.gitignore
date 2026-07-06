@@ -1,0 +1,21 @@
+# .gitignore del enjambre — solo ignora lo por-dev / temporal.
+# El resto del enjambre (agents/, skills/, commands/, references/, assets/,
+# CLAUDE.md, AGENTS.md, README.md, ENJAMBRE.md, workspace.example.md, hooks/,
+# settings.json, statusline.sh) SÍ se versiona.
+
+# Config de entorno por-dev (se copia de workspace.example.md, que sí se versiona)
+workspace.md
+
+# Overrides locales de settings (pueden traer paths/tokens del dev)
+settings.local.json
+
+# Secretos / temporales locales del enjambre
+*.local
+*.local.md
+.env
+.env.*
+!.env.example
+secrets*
+*.tmp
+*.log
+*.bak
